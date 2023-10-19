@@ -38,19 +38,34 @@ async function run() {
       const result = await carCollection.findOne(query)
       res.send(result)
     })
-    
-    app.get('/car/:id', async(req, res)=> {
-      const id = req.params.id 
-      const query = {_id : new ObjectId(id)}
-      const result = await carCollection.find(query)
-      res.send(result)
-    })
+
 
     app.post('/car', async(req, res)=>{
         const newCar = req.body
         console.log(newCar)
         const result =  await carCollection.insertOne(newCar)
         res.send(result)
+    })
+
+    app.put('/car/:brand/:id',async(req, res)=>{
+      const id = req.params.id
+      const filter = {_id : new ObjectId(id)}
+      const options = {upsert: true}
+      const updatedCar = req.body
+      const car = {
+        $set: {
+          name: updatedCar.name, 
+          brand: updatedCar.brand, 
+          image: updatedCar.image, 
+          description: updatedCar.description, 
+          price: updatedCar.price, 
+          rating: updatedCar.rating, 
+          type: updatedCar.type, 
+          photo: updatedCar.photo
+        }
+      }
+      const result = await carCollection.updateOne(filter, car, options)
+      res.send(result)
     })
 
     await client.db("admin").command({ ping: 1 });
