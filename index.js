@@ -80,7 +80,7 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res)=>{
-    res.send('Siyana carvila server is running')
+    res.send('SIYANA CARVILA server is running')
 })
 
 app.listen(port, ()=>{
