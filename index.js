@@ -25,8 +25,9 @@ async function run() {
     await client.connect();
 
     const carCollection = client.db('carDB').collection('honda')
+    const userCollection = client.db('carDB').collection('user')
 
-    app.get('/car', async(req, res)=>{
+    app.get('/car/brand', async(req, res)=>{
       const cursor = carCollection.find()
       const result = await cursor.toArray()
       res.send(result)
@@ -40,7 +41,7 @@ async function run() {
     })
 
 
-    app.post('/car', async(req, res)=>{
+    app.post('/car/brand', async(req, res)=>{
         const newCar = req.body
         console.log(newCar)
         const result =  await carCollection.insertOne(newCar)
@@ -68,6 +69,19 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/user',async(req, res)=>{
+      const cursor = userCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+    })
+
+    app.post('/user', async(req, res)=>{
+      const user = req.body
+      console.log(user)
+      const result = await userCollection.insertOne(user)
+      res.send(result)
+    })
+
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
@@ -84,5 +98,5 @@ app.get('/', (req, res)=>{
 })
 
 app.listen(port, ()=>{
-    console.log(`carvila server is running on port: ${port}`)
+    console.log(`SIYANA CARVILA server is running on port: ${port}`)
 })
